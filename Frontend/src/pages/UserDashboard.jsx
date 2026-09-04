@@ -1,8 +1,8 @@
 import { useUser } from "../hooks/user/userUser"
 import Loader from "../layouts/ui/Loader"
 const UserDashboard = () => {
+  console.log("adadadad")
   const {data: user, error, isLoading} = useUser()
-  console.log(user)
   if(isLoading) return <Loader />
   if(error) return <div>{error}</div>
   return (

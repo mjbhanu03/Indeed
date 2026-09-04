@@ -25,7 +25,7 @@ axiosClient.interceptors.request.use(function (request) {
   const token = getToken();
   // response = bodyDecryption(response.data);
   if(token){
-    console.log(token)
+    // console.log(token)
     request.headers["token"] = token
   } 
   if (token && request.requireAuth !== false) {
@@ -74,7 +74,7 @@ axiosClient.interceptors.response.use(
 );
 
 function bodyEncryption(request, isStringify) {
-  console.log("bodyEncryption request=>>>",request);
+  // console.log("bodyEncryption request=>>>",request);
   var request_ = isStringify ? JSON.stringify(request) : request;
   var encrypted = CryptoJS.AES.encrypt(request_, key, { iv: iv });
   return encrypted.toString();
@@ -82,7 +82,7 @@ function bodyEncryption(request, isStringify) {
 
 
 function bodyDecryption(request) {
-  console.log("decryptions",request);
+  // console.log("decryptions",request);
   var decrypted = CryptoJS.AES.decrypt(request.toString(), key, { iv: iv });
   // console.log("decryptions",decrypted);
   // console.log("bodyDecryption =>>>",JSON.parse(decrypted.toString(CryptoJS.enc.Utf8)));
