@@ -160,8 +160,8 @@ const deleteJob = async (job_id) => {
 }
 
 // Is conversation exist
-const checkConversation = async (job_id) =>{
-  const [[conversation]] = await conn.query("select * from tbl_conversation_history where job_id=?", [job_id])
+const checkConversation = async (job_id, user_id) =>{
+  const [[conversation]] = await conn.query("select * from tbl_conversation_history where job_id=? and user_id", [job_id, user_id])
   return conversation 
 }
 
@@ -174,7 +174,7 @@ const createConversatoin = async (job_id, user_id, conversation_name) =>{
 // Fecthing Interaction ID
 const checkLastMessageForInteractnionID = async(conversation_id)=>{
   const [[lastMessage]] = await conn.query(`select interaction_id from tbl_conversation_messages where conversation_id=? and user_type="admin" order by created_at desc limit 1`, [conversation_id])
-  return lastMessage.interaction_id
+  return lastMessage?.interaction_id
 }
 
 // Fetch Chats
@@ -182,7 +182,7 @@ const fetchChats = async(user_id, job_id)=>{
   const [[conversation]] = await conn.query(`select conversation_id from tbl_conversation_history where user_id=? and job_id=?`, [user_id, job_id])
   console.log("object", conversation)
   if(conversation){
-    const [chats] = await conn.query(`select * from tbl_conversation_messages where conversation_id=?`, [conversation_id.conversation_id])
+    const [chats] = await conn.query(`select * from tbl_conversation_messages where conversation_id=?`, [conversation.conversation_id])
     return chats
   } 
   return null
@@ -192,6 +192,13 @@ const fetchChats = async(user_id, job_id)=>{
 // Create Message
 const createMessage = async (user_type, message, interaction_id, conversation_id) =>{
   const [chat] = await conn.query(`Insert into tbl_conversation_messages set ?`, {user_type, message, interaction_id, conversation_id})
+}
+
+// Fetch resume and cover letter
+const fetchUserDetails = async (user_id) =>{
+  const [[user]] = await conn.query(`select resume, cover_letter from tbl_user_profile where user_id=?`, [user_id]) 
+
+  return user
 }
 module.exports = {
   fetchJobs,
@@ -203,6 +210,7 @@ module.exports = {
   createConversatoin,
   checkLastMessageForInteractnionID,
   fetchChats, 
-  createMessage
+  createMessage,
+  fetchUserDetails
 };
 

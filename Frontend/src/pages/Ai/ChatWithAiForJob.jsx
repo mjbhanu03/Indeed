@@ -38,7 +38,8 @@ const ChatWithAiForJob = () => {
     const userMessage = prompt.trim();
 
     // Show user message immediately
-    setChats((prev) => [
+    if(!chats) setChats([{user_type: "user", message: userMessage}])
+    else setChats((prev) => [
       ...prev,
       {
         user_type: "user", 

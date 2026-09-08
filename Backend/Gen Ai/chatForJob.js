@@ -1,6 +1,6 @@
 const { GoogleGenAI } = require("@google/genai");
 const path = require("path");
-
+const upload_path = "C:/Users/MJ/Desktop/Indeed/backend/"
 require("dotenv").config({
   path: path.join(__dirname, "../.env")
 });
@@ -26,15 +26,51 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY
   });
   
-  const callAI = async (id, question) => {
-    const params = {
-        model: "gemini-3.7-flash",
+  const callAI = async (id, question, resumePath, cover_letterPath, job_details) => {
+    let resume=null, cover_letter=null;
+    const input = []
+    if(job_details) question += " . Here is my job details." + JSON.stringify(job_details)
+    if(resumePath){
+
+      resume = await ai.files.upload({
+        file: upload_path+resumePath,
+      config:{
+        mimeType: "application/pdf"
+      }
+    })
+
+        input.push({
+      type: "document",
+      uri: resume.uri,
+      mime_type: resume.mimeType
+    });
+  } 
+    if(cover_letterPath) {
+      cover_letter = await ai.files.upload({
+      file: upload_path+cover_letterPath,
+      config:{
+        mimeType: "application/pdf"
+      }
+    })
+        input.push({
+      type: "document",
+      uri: cover_letter.uri,
+      mime_type: cover_letter.mimeType
+    });
+  }
+  
+  input.push({
+    type: "text",
+    text: question
+  });
+  
+  const params = {
+        model: "gemini-3.6-flash",
         system_instruction: SYSTEM_PROMPT,
-        input: question
+        input
       }
     if(id)     params.previous_interaction_id= id
-
-  console.log("ahiya", id)
+  // console.log("ahiya", id)
   if(!id) id=""
   const interaction = await ai.interactions.create(params);
   if(interaction.statusCode === 429) return {error: true, message: "You exceeded your current quota, please check your plan and billing details. Please try again later or change the model.", id}
