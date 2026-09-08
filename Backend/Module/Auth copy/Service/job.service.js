@@ -5,7 +5,8 @@ const constant = require("../../../Constant/constant");
 const bcrypt = require("bcryptjs");
 const { checkToken } = require("../../Auth/Repository/auth.repository");
 const jwt = require("jsonwebtoken");
-const env = require("dotenv")
+const env = require("dotenv");
+const callAI = require("../../../Gen Ai/chatForJob");
 env.config()
 
 // Fetch Jobs
@@ -93,10 +94,51 @@ const deleteJob = async (req) => {
     return { success: false, key: "somethingWentWrong" };
   }
 }
+
+// Chat with AI
+const chatWithAI = async (data) =>{
+  try {
+    let interactionId = null, conversation_id = null
+
+    const conversation = await repository.checkConversation(data.job_id)
+    if(!conversation.conversation_id){
+      const createConversatoin = await repository.createConversatoin(data.job_id, data.user_id, `Conversation for ${job_id}`)
+      conversation_id = createConversatoin 
+    }else{
+      console.log("conversation_id", conversation.conversation_id)
+      conversation_id = conversation.conversation_id
+    }
+      interactionId = await repository.checkLastMessageForInteractnionID(conversation_id)
+      console.log(interactionId)
+    const response = await callAI(interactionId, data.question)
+    const createUserMessage = await repository.createMessage("user", data.question, null, conversation_id)
+    const createAdminMessage = await repository.createMessage("admin", response.message, response.id, conversation_id)
+    return response 
+  } catch (error) {
+    console.log(error)
+    return  
+  }
+}
+
+// Fetch Chats
+const fetchChats = async (data) =>{
+  try {
+    const chats = await repository.fetchChats(data.user_id, data.job_id)
+    if(!chats) return {success: true, message: "chatsNotFound"}
+    else return {success: true, message: "chatsFound", data: chats}
+  } catch (error) {
+    console.log(error)
+    return  
+  }
+}
+
+
 module.exports = {
   fetchJobs,
   fetchJobDetails,
   createJob,
   updateJob,
-  deleteJob
+  deleteJob,
+  chatWithAI,
+  fetchChats,
 };

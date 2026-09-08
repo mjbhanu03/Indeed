@@ -216,10 +216,40 @@ const deleteJob = async (req, res) => {
 }
 }
 
+
+// Chat With AI
+const chatWithAI = async (req, res)=>{
+  try {
+    const response = await service.chatWithAI({...req.body, user_id: req.user.user_id})
+    console.log("chat happening", response)
+    sendResponse(req, res, 200, responseCode.SUCCESS, {key: "Success"}, response)
+  } catch (error) {
+    console.log(error)  
+    sendResponse(req, res, 400, responseCode.ERROR, {key: "somethingWentWrong"}, {})
+  }
+
+}
+
+// Fetch Chats
+const fetchChats = async (req, res)=>{
+  try {
+    // console.log("object afaafafafaf", req.params.id)
+    const response = await service.fetchChats({job_id: req.params.id, user_id: req.user.user_id})
+    // console.log("object", response)
+    sendResponse(req, res, 200, responseCode.SUCCESS, {key: "Success"}, response)
+  } catch (error) {
+    console.log(error)  
+    sendResponse(req, res, 400, statusCode.ERROR, {key: "somethingWentWrong"}, {})
+  }
+
+}
+
 module.exports = {
   fetchJobs,
   fetchJobDetails,
   createJob,
   updateJob,
-  deleteJob
+  deleteJob,
+  chatWithAI,
+  fetchChats
 };

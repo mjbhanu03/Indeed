@@ -36,7 +36,7 @@ axiosClient.interceptors.request.use(function (request) {
 
 axiosClient.interceptors.response.use(
   function (response) {
-    // console.log("res", response)
+    console.log("res", response)
     response = bodyDecryption(response.data);
 
     // if (response.code === 400) {
@@ -51,7 +51,7 @@ axiosClient.interceptors.response.use(
     if (!error.response) {
       return Promise.reject(error);
     }
-
+    console.log("HERE", error)
     if (res.status == 401 || res.status === -1) {
       logOutRedirectCall();
       const response = bodyDecryption(res.data);
@@ -85,9 +85,11 @@ function bodyDecryption(request) {
   // console.log("decryptions",request);
   var decrypted = CryptoJS.AES.decrypt(request.toString(), key, { iv: iv });
   // console.log("decryptions",decrypted);
-  // console.log("bodyDecryption =>>>",JSON.parse(decrypted.toString(CryptoJS.enc.Utf8)));
+  const response = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8))
+  if(response.message === "tokenExpired") logOutRedirectCall()
+  // console.log("bodyDecryption =>>>",);
 
-  return JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
+  return response;
 }
 
 function getToken(){

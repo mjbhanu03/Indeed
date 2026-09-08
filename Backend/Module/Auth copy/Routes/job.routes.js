@@ -39,4 +39,9 @@ router.patch(
 // Delete Job
 router.delete("/deleteJob", checkRole(["admin"]), common.validate(validator.deleteJobSchema), controller.deleteJob);
 
+
+//Chat with Ai 
+router.post("/ai-chat", controller.chatWithAI)
+
+router.get("/chats/:id", controller.fetchChats)
 module.exports = router;

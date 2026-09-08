@@ -4,22 +4,34 @@ import ReactMarkdown from "react-markdown";
 import { useUserProfile } from "../../hooks/user/userUser";
 
 import "./ChatWithAi.css";
+import { useLocation } from "react-router-dom";
 
-const ChatWithAi = () => {
+const ChatWithAiForJob = () => {
+  const location = useLocation()
+  const jobId = location.state?.jobId
   const [prompt, setPrompt] = useState("");
   const [chats, setChats] = useState([]);
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const { data: userProfileData } = useUserProfile();
-  const [previousInteractionID, setPreviousInteractionID] = useState(null)
-  const [error, setError] = useState(true)
+  // const [previousInteractionID, setPreviousInteractionID] = useState(null)
+  const [error, setError] = useState(false)
+  useEffect(()=>{
+    fetchChat()
+  }, [])
   // Auto scroll to latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
     });
   }, [chats, loading]);
-
+  const fetchChat = async () =>{
+    const chats = await axiosClient.get(`http://localhost:5000/jobs/v1/chats/${jobId}`)
+    // if(chats.status !== 200) setError(chats.message)
+      console.log("chats", chats.data.data)
+      
+    setChats(chats.data.data)
+  }
   const chatWithAi = async () => {
     if (!prompt.trim() || loading) return;
     setError(false)
@@ -29,8 +41,8 @@ const ChatWithAi = () => {
     setChats((prev) => [
       ...prev,
       {
-        type: "user",
-        chat: userMessage,
+        user_type: "user", 
+        message: userMessage,
       },
     ]);
 
@@ -39,21 +51,21 @@ const ChatWithAi = () => {
 
     try {
       const response = await axiosClient.post(
-        "http://localhost:5000/user/v1/ai-chat",
+        "http://localhost:5000/jobs/v1/ai-chat",
         { 
-          id: previousInteractionID,
+          job_id: jobId,
           question: userMessage,
         },
       );
-      console.log(response)
-      setPreviousInteractionID(response.data.id)
-      setChats((prev) => [
-        ...prev,
-        {
-          type: "admin",
-          chat: response.data.message,
-        },
-      ]);
+      await fetchChat()
+      // setPreviousInteractionID(response.data.id)
+      // setChats((prev) => [
+      //   ...prev,
+      //   {
+      //     type: "admin",
+      //     chat: response.data.message,
+      //   },
+      // ]);
     } catch (error) {
       console.error(error.message);
 
@@ -81,7 +93,6 @@ const ChatWithAi = () => {
       {/* Header */}
       <div className="header">
         <div className="aiIcon">✦</div>
-
         <div>
           <h2 className="title">AI Assistant</h2>
           <div className="status">
@@ -93,7 +104,7 @@ const ChatWithAi = () => {
 
       {/* Chat messages */}
       <div className="chatArea">
-        {chats.length === 0 && (
+        {!chats && (
           <div className="emptyState">
             <div className="bigIcon">✦</div>
 
@@ -103,17 +114,17 @@ const ChatWithAi = () => {
           </div>
         )}
 
-        {chats.map((message, index) => (
+        {chats && chats.map((chat, index) => (
           <div
             key={index}
             className="messageRow"
             style={{
               justifyContent:
-                message.type === "user" ? "flex-end" : "flex-start",
+                chat.user_type === "user" ? "flex-end" : "flex-start",
             }}
             
           >
-            {message.type === "admin" && 
+            {chat.user_type === "admin" && 
             (
               <div className="smallAiIcon">✦</div>
             )}
@@ -121,7 +132,7 @@ const ChatWithAi = () => {
             <div
               className={`
                 message
-                ${(message.type === "user"
+                ${(chat.user_type === "user"
                   ? "userMessage"
                   : "aiMessage")}
               `}
@@ -131,15 +142,15 @@ const ChatWithAi = () => {
               >
 
               <ReactMarkdown>
-                {typeof message.chat === "object"
-                  ? JSON.stringify(message.chat)
-                  : message.chat}
+                {typeof chat.message === "object"
+                  ? JSON.stringify(chat.message)
+                  : chat.message}
               </ReactMarkdown>
 
 
 
             </div>
-                  {message.type === "user" && (
+                  {chat.user_type === "user" && (
                     <div className="smallUserIcon">{userProfileData.data.full_name[0]}</div>
                   )}
           </div>
@@ -193,4 +204,4 @@ const ChatWithAi = () => {
   );
 };
 
-export default ChatWithAi;
+export default ChatWithAiForJob;

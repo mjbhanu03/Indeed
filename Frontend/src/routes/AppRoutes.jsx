@@ -19,6 +19,7 @@ import AddOrEditJob from '../pages/public/AddOrEditJob';
 import AllApplications from '../pages/Applications/AllApplications';
 import ChangePasssword from '../pages/Auth/ChangePasssword';
 import ChatWithAi from '../pages/Ai/ChatWithAi';
+import ChatWithAiForJob from '../pages/Ai/ChatWithAiForJob';
 
 // Public (no login required)
 const PublicJobs     = lazy(() => import('../pages/public/PublicJob'));
@@ -78,6 +79,7 @@ export default function AppRoutes() {
           <Route path="profile"   element={<UserProfile />} />
           <Route path="changePassword"   element={<ChangePasssword />} />
           <Route path="ai-chat"   element={<ChatWithAi />} />
+          <Route path="ai-job-chat"   element={<ChatWithAiForJob />} />
         </Route>
 
         <Route path="/admin" element={<ProtectedRoute role="admin"><AdminLayout /></ProtectedRoute>}>

@@ -51,8 +51,13 @@ const updateProfile = async (data) => {
 
 // Chat with AI
 const chatWithAI = async (data) =>{
-  const response = await callAI(data.question)
-  return response 
+  try {
+    const response = await callAI(data.id, data.question)
+    return response 
+  } catch (error) {
+    console.log(error)
+    return  
+  }
 }
 module.exports = {
   fetchProfile,

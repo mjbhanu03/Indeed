@@ -11,7 +11,8 @@ export const normalizeResponse = (response) => {
       throw new Error(response.errors);
 
     case 0:
-      throw new Error(response.message);
+      // throw new Error(response.message);
+      return response
 
     case -1:
       throw new Error("Unauthorized");

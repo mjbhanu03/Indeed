@@ -106,8 +106,8 @@ const updateProfile = async (req, res) => {
 const chatWithAI = async (req, res)=>{
   try {
     const response = await service.chatWithAI({...req.body, user_id: req.user.user_id})
-    console.log("Here is the error", response)
-    sendResponse(req, res, 200, constants.SUCCESS, "Success", response)
+    console.log("object", response)
+    sendResponse(req, res, 200, constants.SUCCESS, {key: "Success"}, response)
   } catch (error) {
     console.log(error)  
     sendResponse(req, res, 400, constants.ERROR, {key: "somethingWentWrong"}, {})
