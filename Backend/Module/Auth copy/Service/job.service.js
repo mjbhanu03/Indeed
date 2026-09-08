@@ -5,7 +5,8 @@ const constant = require("../../../Constant/constant");
 const bcrypt = require("bcryptjs");
 const { checkToken } = require("../../Auth/Repository/auth.repository");
 const jwt = require("jsonwebtoken");
-const env = require("dotenv")
+const env = require("dotenv");
+const callAI = require("../../../Gen Ai/chatForJob");
 env.config()
 
 // Fetch Jobs
@@ -93,10 +94,59 @@ const deleteJob = async (req) => {
     return { success: false, key: "somethingWentWrong" };
   }
 }
+
+// Chat with AI
+const chatWithAI = async (data) =>{
+  try {
+    let interactionId = null, conversation_id = null, resume=null, cover_letter=null, job_details=null
+
+    const conversation = await repository.checkConversation(data.job_id, data.user_id)
+    console.log("tu idhar kya de raha hai", conversation)
+    if(!conversation){
+      const createConversation = await repository.createConversatoin(data.job_id, data.user_id, `Conversation for ${data.job_id}`)
+      conversation_id = createConversation
+      const user = await repository.fetchUserDetails(data.user_id)
+      resume = user?.resume ?? null
+      cover_letter = user?.cover_letter ?? null
+      let details = await repository.fetchJobDetails(data.job_id)
+      job_details = [details.data]
+      console.log("This is first time", resume, cover_letter, job_details)
+    }else{
+      console.log("idhat aara hai ke upr", resume, cover_letter)
+      console.log("conversation_id", conversation.conversation_id)
+      conversation_id = conversation.conversation_id
+    }
+      interactionId = await repository.checkLastMessageForInteractnionID(conversation_id)
+    const response = await callAI(interactionId, data.question, resume, cover_letter, job_details)
+
+    const createUserMessage = await repository.createMessage("user", data.question, null, conversation_id)
+    const createAdminMessage = await repository.createMessage("admin", response.message, response.id, conversation_id)
+    return response 
+  } catch (error) {
+    console.log(error)
+    return  
+  }
+}
+
+// Fetch Chats
+const fetchChats = async (data) =>{
+  try {
+    const chats = await repository.fetchChats(data.user_id, data.job_id)
+    if(!chats) return {success: true, message: "chatsNotFound"}
+    else return {success: true, message: "chatsFound", data: chats}
+  } catch (error) {
+    console.log(error)
+    return  
+  }
+}
+
+
 module.exports = {
   fetchJobs,
   fetchJobDetails,
   createJob,
   updateJob,
-  deleteJob
+  deleteJob,
+  chatWithAI,
+  fetchChats,
 };

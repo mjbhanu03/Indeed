@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Suspense, lazy, useEffect } from 'react';
+import { Suspense, lazy } from 'react';
 import { ProtectedRoute } from './ProtectedRoute';
 import PublicLayout  from '../layouts/PublicLayout';
 import Login from '../pages/Auth/Login';
@@ -18,6 +18,8 @@ import UserDetails from '../pages/Admin/UserDetails';
 import AddOrEditJob from '../pages/public/AddOrEditJob';
 import AllApplications from '../pages/Applications/AllApplications';
 import ChangePasssword from '../pages/Auth/ChangePasssword';
+import ChatWithAi from '../pages/Ai/ChatWithAi';
+import ChatWithAiForJob from '../pages/Ai/ChatWithAiForJob';
 
 // Public (no login required)
 const PublicJobs     = lazy(() => import('../pages/public/PublicJob'));
@@ -69,13 +71,15 @@ export default function AppRoutes() {
 
         <Route path="/user" element={<ProtectedRoute role="user"><UserLayout /></ProtectedRoute>}>
           <Route index element={<Navigate to="dashboard" replace />} />
-          <Route path="dashboard"    element={<UserDashboard />} />
+          <Route path="dashboard" element={<UserDashboard />} />
           <Route path="jobs"       element={<PublicJobs />} />
           <Route path="jobs/:id"   element={<JobsDetailGate />} />
           <Route path="applications"   element={<MyApplications />} />
           <Route path="apply-for-job/:jobId"   element={<CreateApplications />} />
           <Route path="profile"   element={<UserProfile />} />
           <Route path="changePassword"   element={<ChangePasssword />} />
+          <Route path="ai-chat"   element={<ChatWithAi />} />
+          <Route path="ai-job-chat"   element={<ChatWithAiForJob />} />
         </Route>
 
         <Route path="/admin" element={<ProtectedRoute role="admin"><AdminLayout /></ProtectedRoute>}>

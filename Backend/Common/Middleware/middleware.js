@@ -38,13 +38,12 @@ const checkToken = async (req, res, next) => {
         .status(401)
         .send({ code: responseCode.ERROR, message: "tokenMissing", data: {} });
 
-    const decoded = jwt.verify(token, process.env.JWT_WEB_TOKEN);
-
-    if (!decoded)
-      return res
+        const decoded = jwt.verify(token, process.env.JWT_WEB_TOKEN);
+        if (!decoded)
+          return res
         .status(401)
         .send({ code: responseCode.ERROR, message: "tokenExpired", data: {} });
-    if (!isTokenLoggedOut)
+        if (!isTokenLoggedOut)
       return res
         .status(401)
         .send({ code: responseCode.ERROR, message: "invalidToken", data: {} });
@@ -55,12 +54,13 @@ const checkToken = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error);
+    // console.log("decoded come here", error)
     sendResponse(
       req,
       res,
       401,
       responseCode.ERROR,
-      { key: "tokenMissing" },
+      { key: "tokenExpired" },
       {},
     );
   }

@@ -20,6 +20,7 @@ const PublicJobs = () => {
   const [jobsData, setJobsData] = useState(null)
   const {isAuthenticated, user} = useSelector(s=>s.auth)
   console.log("jobs", jobs?.data)
+
   useEffect(()=>{
     setJobsData(jobs?.data?.jobs || null)
   }, [jobs])
@@ -157,11 +158,21 @@ const PublicJobs = () => {
 </div>
             )}
 {job.is_active === 1 && job.is_applied !== 1 && user?.role === "user" && (isAuthenticated ? 
+                <div className="d-flex gap-3">
                 <button className="btn btn-primary py-2" onClick={(e)=> {
                   e.stopPropagation()
                   navigate(`/user/apply-for-job/${job.id}`)}}>
                     Apply Now
                   </button>
+                <button className="text-white btn py-2 ai-btn" onClick={(e)=> {
+                  e.stopPropagation()
+                  navigate(`/user/ai-job-chat`, {
+                    state: {jobId: job.id}  
+                  })
+                  }}>
+                    Ask AI
+                  </button>
+                    </div>
                   : 
                 <button className="btn btn-primary py-2" onClick={()=> navigate("/signin")}>
                     Login to Apply Now

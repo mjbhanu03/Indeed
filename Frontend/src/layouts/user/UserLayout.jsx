@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { to: '/user/dashboard', label: 'Dashboard'   },
   { to: '/user/jobs',    label: 'Jobs'      },
   { to: '/user/applications',  label: 'My Applications' },
+  { to: "/user/ai-chat", label: "Chat with Ai" }
 ];
 
 
@@ -40,7 +41,7 @@ export default function UserLayout() {
       <nav className="navbar navbar-expand-lg sticky-top theme-navbar" style={{ boxShadow: 'var(--shadow-nav)' }}>
         <div className="container">
           <Link className="navbar-brand fw-bold" to="/user/dashboard" style={{ color: 'var(--navbar-text)' }}>
-            🎉 Jobs
+            🎉 Indeed
           </Link>
 
           <div className="d-flex align-items-center gap-2 ms-auto">

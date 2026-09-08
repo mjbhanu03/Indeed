@@ -17,6 +17,9 @@ router.put(
   controller.updateProfile,
 );
 
+//Chat with Ai 
+router.post("/ai-chat", controller.chatWithAI)
+
 // get profile
 router.get(
   "/profile",

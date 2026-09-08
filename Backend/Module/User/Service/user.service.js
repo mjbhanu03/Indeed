@@ -1,6 +1,7 @@
 const repository = require("../Repository/user.repository");
 const common = require("../../../Common/common");
 const { sub } = require("framer-motion/m");
+const callAI = require("../../../Gen Ai/genai");
 
 // Fetch Dashboard
 const fetchDashboard = async (user_id) => {
@@ -48,9 +49,19 @@ const updateProfile = async (data) => {
   }
 };
 
-
+// Chat with AI
+const chatWithAI = async (data) =>{
+  try {
+    const response = await callAI(data.id, data.question)
+    return response 
+  } catch (error) {
+    console.log(error)
+    return  
+  }
+}
 module.exports = {
   fetchProfile,
   updateProfile,
-  fetchDashboard
+  fetchDashboard,
+  chatWithAI
 };

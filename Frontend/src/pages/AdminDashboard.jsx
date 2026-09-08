@@ -3,7 +3,7 @@ import Loader from "../layouts/ui/Loader";
 
 const AdminDashboard = () => {
   const { data: stats, error, isLoading } = useDashboard();
-
+  console.log(stats)
   if (isLoading) return <Loader />;
   if (error) return <div>{error}</div>;
 
