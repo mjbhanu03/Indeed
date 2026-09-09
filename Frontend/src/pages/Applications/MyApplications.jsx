@@ -126,7 +126,7 @@ const MyApplications = () => {
 
                   <div className="d-flex gap-2">
                     <a
-                      href={`http://localhost:5000/${app.resume_file_path}`}
+                      href={`https://indeed-3ozc.onrender.com/${app.resume_file_path}`}
                       target="_blank"
                       rel="noreferrer"
                       className="btn btn-outline-primary btn-sm flex-fill"
@@ -135,7 +135,7 @@ const MyApplications = () => {
                     </a>
 
                     <a
-                      href={`http://localhost:5000/${app.cover_letter_file_path}`}
+                      href={`https://indeed-3ozc.onrender.com/${app.cover_letter_file_path}`}
                       target="_blank"
                       rel="noreferrer"
                       className="btn btn-outline-secondary btn-sm flex-fill"

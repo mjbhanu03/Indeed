@@ -5,7 +5,7 @@ var key = CryptoJS.enc.Utf8.parse("thew6Q8WfEe0m6uzIljTl9wJ1gMR5xor");
 var iv = CryptoJS.enc.Utf8.parse("thew6Q8WfEe0m6uz");
 
 const axiosClient = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://indeed-3ozc.onrender.com/",
   headers: {
     "api-key":"indeed",
     "accept-language": "en",

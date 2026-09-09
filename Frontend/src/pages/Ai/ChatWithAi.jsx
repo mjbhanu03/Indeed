@@ -39,7 +39,7 @@ const ChatWithAi = () => {
 
     try {
       const response = await axiosClient.post(
-        "http://localhost:5000/user/v1/ai-chat",
+        "https://indeed-3ozc.onrender.com/user/v1/ai-chat",
         { 
           id: previousInteractionID,
           question: userMessage,
