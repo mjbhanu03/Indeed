@@ -11,7 +11,7 @@ export const getJobs = async () => {
       requireAuth: false
     }
   );
-
+  console.log("Idhar to dekho", response)
   return normalizeResponse(response);
 };
 export const getFilteredJobs = async (payload) => {
