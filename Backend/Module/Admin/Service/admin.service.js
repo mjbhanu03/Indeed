@@ -2,7 +2,7 @@ const common = require("../../../Common/common");
 const repository = require("../Repository/admin.repository");
 const middleware = require("../../../Common/Middleware/middleware");
 const constant = require("../../../Constant/constant");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const { checkToken } = require("../../Auth/Repository/auth.repository");
 const jwt = require("jsonwebtoken");
 // Fetch Users
