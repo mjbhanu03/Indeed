@@ -19,7 +19,7 @@ const fetchJobs = async (queries, user_id=null) => {
     return { success: true, key: "dataFound", data: result.data  };
   } catch (error) {
     console.log(error);
-    return { success: false, key: "somethingWentWrong" };
+    return { success: false, key: "somethingWentWrong", error: error.message };
   }
 };
 
