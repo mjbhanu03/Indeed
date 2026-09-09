@@ -35,7 +35,24 @@ app.use("/user/v1", user);
 app.use("/jobs/v1", jobs);
 app.use("/applications/v1", applications);
 app.use("/admin/v1", admin);
+app.get("/db", async (req, res) => {
+    try {
+        const [rows] = await db.query("SELECT 1");
 
+        res.json({
+            success: true,
+            message: "Backend connected to MySQL",
+            database: rows
+        });
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            success: false,
+            message: "Database connection failed"
+        });
+    }
+});
 try {
   app.listen(process.env.PORT);
   console.log(`Server is running on http://localhost:${process.env.PORT}`)
