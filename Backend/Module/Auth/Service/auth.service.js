@@ -1,6 +1,6 @@
 const common = require("../../../Common/common");
 const repository = require("../Repository/auth.repository");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const {responseCode: constant} = require("../../../Constant/constant")
 
 // Sign Up
