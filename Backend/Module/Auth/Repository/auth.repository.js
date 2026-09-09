@@ -1,4 +1,3 @@
-const { create } = require("framer-motion/m");
 const conn = require("../../../Config/db");
 const { get } = require("../Routes/auth.routes");
 
