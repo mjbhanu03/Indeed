@@ -26,15 +26,6 @@ app.use(cors({origin: "*", credentials: true}));
 app.use(express.text());
 app.use(express.json());
 
-app.use(checkAPIKey);
-app.use(checkToken);
-app.use(decryption)
-
-app.use("/auth/v1", auth);
-app.use("/user/v1", user);
-app.use("/jobs/v1", jobs);
-app.use("/applications/v1", applications);
-app.use("/admin/v1", admin);
 app.get("/db", async (req, res) => {
     try {
         const [rows] = await db.query("SELECT 1");
@@ -53,6 +44,15 @@ app.get("/db", async (req, res) => {
         });
     }
 });
+app.use(checkAPIKey);
+app.use(checkToken);
+app.use(decryption)
+
+app.use("/auth/v1", auth);
+app.use("/user/v1", user);
+app.use("/jobs/v1", jobs);
+app.use("/applications/v1", applications);
+app.use("/admin/v1", admin);
 try {
   app.listen(process.env.PORT);
   console.log(`Server is running on http://localhost:${process.env.PORT}`)
