@@ -18,7 +18,7 @@ const fetchJobs = async (req, res) => {
         statusCode.SUCESS,
         responseCode.NO_DATA_FOUND,
         { key: result.key },
-        result.errors,
+        result.error,
       );
       return;
     }  else if (!result.success && result.key === "somethingWentWrong") {
@@ -28,7 +28,7 @@ const fetchJobs = async (req, res) => {
         statusCode.SUCESS,
         responseCode.ERROR,
         { key: result.key },
-        result.errors,
+        result.error,
       );
       return;
     }else {
@@ -50,7 +50,7 @@ const fetchJobs = async (req, res) => {
       501,
       responseCode.ERROR,
       { key: "internalServerError" },
-      {},
+      error.message,
     );
   }
 };
