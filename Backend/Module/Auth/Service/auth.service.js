@@ -38,7 +38,7 @@ const signUp = async (data) => {
         job_role,
       );
       if (!userProfile.success)
-        return { success: false, key: "userCreationFailed", errors: signUpResult.error };
+        return { success: false, key: "userCreationFailed", errors: userProfile.error };
 
       const userProfileData = await repository.getUserProfile(
         signUpResult.user,
@@ -67,11 +67,11 @@ const signUp = async (data) => {
       };
       return { success: true, key: "userCreated", user: user };
     } else {
-      return { success: false, key: "userCreationFailed" };
+      return { success: false, key: "userCreationFailed", errors: signUpResult.error };
     }
   } catch (error) {
     console.log(error);
-    return { success: false, key: "somethingWentWrong" };
+    return { success: false, key: "somethingWentWrong", errors: error.message };
   }
 };
 

@@ -71,7 +71,7 @@ const setProfile = async (user_id, full_name, mobile_number, job_role) => {
     return { success: true, key: "profileCreated" };
   } catch (error) {
     console.error(error);
-    return { success: false, key: "somethingWentWrong" };
+    return { success: false, key: "somethingWentWrong", error: error.message };
   }
 };
 
