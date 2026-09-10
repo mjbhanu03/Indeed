@@ -10,7 +10,7 @@ const signUp = async (data) => {
     if (data.email) {
       user = await repository.getUser(data.email);
     }
-
+    console.log(user)
     if (user)
       return {
         success: false,
@@ -23,9 +23,8 @@ const signUp = async (data) => {
       email,
       job_role,
       mobile_number,
-      password,
-      confirm_password,
-    } = data;
+      password
+        } = data;
 
     let encPassword = await bcrypt.hash(password, 10);
     // Sign Up

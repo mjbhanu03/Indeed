@@ -6,23 +6,16 @@ import { useApplications } from "../../hooks/applications/useApplications";
 import Loader from "../../layouts/ui/Loader";
 
 const MyApplications = () => {
+  const user_id = useSelector((state) => state.auth.user.user_id);
 
-  const user_id = useSelector(
-    (state) => state.auth.user.user_id
-  );
-
-  const {
-    data: applications,
-    error,
-    isLoading,
-  } = useApplications(user_id);
+  const { data: applications, error, isLoading } = useApplications(user_id);
 
   useEffect(() => {
     if (error) {
       toast.error(
         error?.response?.data?.message ||
           error?.message ||
-          "Something went wrong"
+          "Something went wrong",
       );
     }
   }, [error]);
@@ -71,13 +64,9 @@ const MyApplications = () => {
                 {/* Header */}
                 <div className="d-flex justify-content-between align-items-start">
                   <div>
-                    <h5 className="fw-bold mb-1">
-                      {app.job_title}
-                    </h5>
+                    <h5 className="fw-bold mb-1">{app.job_title}</h5>
 
-                    <p className="text-muted mb-0">
-                      🏢 {app.company_name}
-                    </p>
+                    <p className="text-muted mb-0">🏢 {app.company_name}</p>
                   </div>
 
                   <span
@@ -85,8 +74,8 @@ const MyApplications = () => {
                       app.status === "approved"
                         ? "bg-success"
                         : app.status === "rejected"
-                        ? "bg-danger"
-                        : "bg-warning text-dark"
+                          ? "bg-danger"
+                          : "bg-warning text-dark"
                     }`}
                   >
                     {app.status}
@@ -97,23 +86,15 @@ const MyApplications = () => {
 
                 {/* Details */}
                 <div className="small text-muted">
-                  <p className="mb-2">
-                    👤 {app.full_name}
-                  </p>
+                  <p className="mb-2">👤 {app.full_name}</p>
 
-                  <p className="mb-2">
-                    📧 {app.email}
-                  </p>
+                  <p className="mb-2">📧 {app.email}</p>
 
-                  <p className="mb-2">
-                    📱 {app.mobile_number}
-                  </p>
+                  <p className="mb-2">📱 {app.mobile_number}</p>
 
                   <p className="mb-0">
                     📅 Applied on{" "}
-                    {new Date(
-                      app.created_at
-                    ).toLocaleDateString("en-IN", {
+                    {new Date(app.created_at).toLocaleDateString("en-IN", {
                       day: "numeric",
                       month: "short",
                       year: "numeric",
@@ -123,10 +104,9 @@ const MyApplications = () => {
 
                 {/* Buttons */}
                 <div className="mt-auto pt-3">
-
                   <div className="d-flex gap-2">
                     <a
-                      href={`https://indeed-3ozc.onrender.com/${app.resume_file_path}`}
+                      href={`${import.meta.env.VITE_API_URL}/${app.resume_file_path}`}
                       target="_blank"
                       rel="noreferrer"
                       className="btn btn-outline-primary btn-sm flex-fill"
@@ -135,7 +115,7 @@ const MyApplications = () => {
                     </a>
 
                     <a
-                      href={`https://indeed-3ozc.onrender.com/${app.cover_letter_file_path}`}
+                      href={`${import.meta.env.VITE_API_URL}/${app.cover_letter_file_path}`}
                       target="_blank"
                       rel="noreferrer"
                       className="btn btn-outline-secondary btn-sm flex-fill"

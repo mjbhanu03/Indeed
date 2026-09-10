@@ -5,9 +5,9 @@ var key = CryptoJS.enc.Utf8.parse("thew6Q8WfEe0m6uzIljTl9wJ1gMR5xor");
 var iv = CryptoJS.enc.Utf8.parse("thew6Q8WfEe0m6uz");
 
 const axiosClient = axios.create({
-  baseURL: "https://indeed-3ozc.onrender.com/",
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
-    "api-key":"indeed",
+    "api-key": "indeed",
     "accept-language": "en",
     "Content-Type": "text/plain",
     // type: "admin",
@@ -17,17 +17,17 @@ const axiosClient = axios.create({
 
 // Body Encryption Request
 axiosClient.interceptors.request.use(function (request) {
-  const isFormData = request.data instanceof FormData
+  const isFormData = request.data instanceof FormData;
 
-  if(!isFormData){
-    request.data = bodyEncryption(request.data, true)
+  if (!isFormData) {
+    request.data = bodyEncryption(request.data, true);
   }
   const token = getToken();
   // response = bodyDecryption(response.data);
-  if(token){
+  if (token) {
     // console.log(token)
-    request.headers["token"] = token
-  } 
+    request.headers["token"] = token;
+  }
   if (token && request.requireAuth !== false) {
     request.headers["token"] = token;
   }
@@ -36,7 +36,7 @@ axiosClient.interceptors.request.use(function (request) {
 
 axiosClient.interceptors.response.use(
   function (response) {
-    console.log("res", response)
+    console.log("res", response);
     response = bodyDecryption(response.data);
 
     // if (response.code === 400) {
@@ -51,7 +51,7 @@ axiosClient.interceptors.response.use(
     if (!error.response) {
       return Promise.reject(error);
     }
-    console.log("HERE", error)
+    console.log("HERE", error);
     if (res.status == 401 || res.status === -1) {
       logOutRedirectCall();
       const response = bodyDecryption(res.data);
@@ -66,11 +66,11 @@ axiosClient.interceptors.response.use(
       return response;
     } else {
       console.error(
-        "Looks like there was a problem. Status Code: " + res.status
+        "Looks like there was a problem. Status Code: " + res.status,
       );
       return Promise.reject(error);
     }
-  }
+  },
 );
 
 function bodyEncryption(request, isStringify) {
@@ -80,24 +80,23 @@ function bodyEncryption(request, isStringify) {
   return encrypted.toString();
 }
 
-
 function bodyDecryption(request) {
   // console.log("decryptions",request);
   var decrypted = CryptoJS.AES.decrypt(request.toString(), key, { iv: iv });
   // console.log("decryptions",decrypted);
-  const response = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8))
-  if(response.message === "tokenExpired") logOutRedirectCall()
+  const response = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
+  if (response.message === "tokenExpired") logOutRedirectCall();
   // console.log("bodyDecryption =>>>",);
 
   return response;
 }
 
-function getToken(){
-  return localStorage.getItem('token')
+function getToken() {
+  return localStorage.getItem("token");
 }
-function logOutRedirectCall (){
-  localStorage.removeItem("token")
-  localStorage.removeItem("user")
-  window.location.href="/signin"
+function logOutRedirectCall() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  window.location.href = "/signin";
 }
 export { axiosClient };

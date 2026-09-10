@@ -26,7 +26,7 @@ const ChatWithAiForJob = () => {
     });
   }, [chats, loading]);
   const fetchChat = async () =>{
-    const chats = await axiosClient.get(`https://indeed-3ozc.onrender.com/jobs/v1/chats/${jobId}`)
+    const chats = await axiosClient.get(`/jobs/v1/chats/${jobId}`)
     // if(chats.status !== 200) setError(chats.message)
       console.log("chats", chats.data.data)
       
@@ -52,7 +52,7 @@ const ChatWithAiForJob = () => {
 
     try {
       const response = await axiosClient.post(
-        "https://indeed-3ozc.onrender.com/jobs/v1/ai-chat",
+        "/jobs/v1/ai-chat",
         { 
           job_id: jobId,
           question: userMessage,
