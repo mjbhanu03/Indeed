@@ -7,9 +7,7 @@ const upload = require("../../../Common/Middleware/upload");
 
 // Sign Up
 const signUp = async (req, res) => {
-  console.log("signup controller")
   try {
-    console.log("as", req.body)
     const result = await service.signUp(req.body);
 
     if (!result.success) {
@@ -41,7 +39,7 @@ const signUp = async (req, res) => {
       501,
       responseCode.ERROR,
       { key: "internalServerError" },
-      {},
+      error.message
     );
   }
 };

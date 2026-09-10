@@ -33,10 +33,7 @@ const getUserProfile = async (field) => {
 
 
 // Signup Repository
-const signUp = async (
-  email,
-  password,
-) => {
+const signUp = async (email,  password) => {
   try {
     const insertObject = {
   email,
@@ -55,7 +52,7 @@ const signUp = async (
     };
   } catch (error) {
     console.error(error);
-    return { success: false, key: "somethingWentWrong" };
+    return { success: false, key: "somethingWentWrong", error: error.message };
   }
 };
 

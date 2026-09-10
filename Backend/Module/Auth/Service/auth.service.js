@@ -38,7 +38,7 @@ const signUp = async (data) => {
         job_role,
       );
       if (!userProfile.success)
-        return { success: false, key: "userCreationFailed" };
+        return { success: false, key: "userCreationFailed", errors: signUpResult.error };
 
       const userProfileData = await repository.getUserProfile(
         signUpResult.user,
