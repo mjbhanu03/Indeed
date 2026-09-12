@@ -13,6 +13,7 @@ export const getDashboard = async () => {
 };
 
 export const getUserProfile = async (payload) =>{
+  console.log("payload", payload)
   const response =  await axiosClient.get(
     "/user/v1/profile",
     payload

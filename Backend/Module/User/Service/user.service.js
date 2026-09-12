@@ -22,7 +22,7 @@ const fetchDashboard = async (user_id) => {
 const fetchProfile = async (user_id)=>{
   try {
     const user = await repository.getUserById(user_id);
-    
+    console.log("user", user)
     if (!user) return { success: false, key: "noUserFound" };
 
     return { success: true, key: "userProfileFetched", data: user };

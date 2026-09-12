@@ -27,8 +27,6 @@ const ChatWithAiForJob = () => {
   }, [chats, loading]);
   const fetchChat = async () =>{
     const chats = await axiosClient.get(`/jobs/v1/chats/${jobId}`)
-    // if(chats.status !== 200) setError(chats.message)
-      console.log("chats", chats.data.data)
       
     setChats(chats.data.data)
   }
@@ -49,7 +47,6 @@ const ChatWithAiForJob = () => {
 
     setPrompt("");
     setLoading(true);
-
     try {
       const response = await axiosClient.post(
         "/jobs/v1/ai-chat",
@@ -59,14 +56,7 @@ const ChatWithAiForJob = () => {
         },
       );
       await fetchChat()
-      // setPreviousInteractionID(response.data.id)
-      // setChats((prev) => [
-      //   ...prev,
-      //   {
-      //     type: "admin",
-      //     chat: response.data.message,
-      //   },
-      // ]);
+
     } catch (error) {
       console.error(error.message);
 
@@ -88,8 +78,8 @@ const ChatWithAiForJob = () => {
       chatWithAi();
     }
   };
-
-  return (
+  
+    return (
     <div className="ai-container">
       {/* Header */}
       <div className="header">

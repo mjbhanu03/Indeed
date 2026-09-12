@@ -64,7 +64,7 @@ const signUp = async (data) => {
         token: userData.token,
         role: "user"
       };
-      return { success: true, key: "userCreated", user: user };
+      return { success: true, key: "userCreated", user };
     } else {
       return { success: false, key: "userCreationFailed", errors: signUpResult.error };
     }
@@ -130,9 +130,8 @@ const signIn = async (data) => {
 
     return {
       success: true,
-      code: 1,
       key: "signInSuccess",
-      user,
+      user
     };
   } catch (error) {
     console.log(error);
