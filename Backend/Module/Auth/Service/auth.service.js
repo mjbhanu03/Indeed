@@ -135,7 +135,7 @@ const signIn = async (data) => {
     };
   } catch (error) {
     console.log(error);
-    return { success: false, code: constant.ERROR, key: "somethingWentWrong" };
+    return { success: false, code: constant.ERROR, key: error.message };
   }
 };
 
@@ -151,7 +151,7 @@ const logout = async (token, user_id) => {
     return { success: true, key: "logoutSuccess" };
   } catch (error) {
     console.log(error);
-    return { success: false, key: "somethingWentWrong" };
+    return { success: false, key: error.message };
   }
 };
 
