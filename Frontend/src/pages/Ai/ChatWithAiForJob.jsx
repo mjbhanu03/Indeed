@@ -16,6 +16,18 @@ const ChatWithAiForJob = () => {
   const { data: userProfileData } = useUserProfile();
   // const [previousInteractionID, setPreviousInteractionID] = useState(null)
   const [error, setError] = useState(false)
+
+    const fetchChat = async () =>{
+    try {
+      const chats = await axiosClient.get(`/jobs/v1/chats/${jobId}`)
+        console.log("fetched chats", chats)
+      setChats(chats.data.data)
+    } catch (error) {
+      console.log("Fetch chat has problem: ", error)
+      return 
+    }
+  }
+
   useEffect(()=>{
     fetchChat()
   }, [])
@@ -24,12 +36,9 @@ const ChatWithAiForJob = () => {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
     });
+    console.log(chats)
   }, [chats, loading]);
-  const fetchChat = async () =>{
-    const chats = await axiosClient.get(`/jobs/v1/chats/${jobId}`)
-      
-    setChats(chats.data.data)
-  }
+
   const chatWithAi = async () => {
     if (!prompt.trim() || loading) return;
     setError(false)
@@ -56,7 +65,7 @@ const ChatWithAiForJob = () => {
         },
       );
       await fetchChat()
-
+      console.log("I will check here", response)
     } catch (error) {
       console.error(error.message);
 

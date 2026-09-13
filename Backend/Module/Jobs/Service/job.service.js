@@ -117,7 +117,8 @@ const chatWithAI = async (data) =>{
       conversation_id = conversation.conversation_id
     }
       interactionId = await repository.checkLastMessageForInteractnionID(conversation_id)
-    const response = await callAI(interactionId, data.question, resume, cover_letter, job_details)
+      const response = await callAI(interactionId, data.question, resume, cover_letter, job_details)
+      console.log(response)
 
     const createUserMessage = await repository.createMessage("user", data.question, null, conversation_id)
     const createAdminMessage = await repository.createMessage("admin", response.message, response.id, conversation_id)

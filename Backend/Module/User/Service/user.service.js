@@ -55,7 +55,7 @@ const chatWithAI = async (data) =>{
     return response 
   } catch (error) {
     console.log(error)
-    return  
+    return  error.message
   }
 }
 module.exports = {

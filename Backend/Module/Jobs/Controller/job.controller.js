@@ -220,6 +220,7 @@ const deleteJob = async (req, res) => {
 // Chat With AI
 const chatWithAI = async (req, res)=>{
   try {
+    // console.log("chat with ai", req.body, req.user.user_id)
     const response = await service.chatWithAI({...req.body, user_id: req.user.user_id})
     console.log("chat happening", response)
     sendResponse(req, res, 200, responseCode.SUCCESS, {key: "Success"}, response)

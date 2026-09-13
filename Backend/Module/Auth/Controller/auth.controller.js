@@ -54,7 +54,7 @@ const signIn = async (req, res) => {
         req,
         res,
         statusCode.SUCESS,
-        responseCode.SUCCESS,
+        responseCode.ERROR,
         { key: result.key },
         result.errors,
       );

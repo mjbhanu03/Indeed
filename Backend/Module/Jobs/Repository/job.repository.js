@@ -160,7 +160,7 @@ const deleteJob = async (job_id) => {
 
 // Is conversation exist
 const checkConversation = async (job_id, user_id) =>{
-  const [[conversation]] = await conn.query("select * from tbl_conversation_history where job_id=? and user_id", [job_id, user_id])
+  const [[conversation]] = await conn.query("select * from tbl_conversation_history where job_id=? and user_id=?", [job_id, user_id])
   return conversation 
 }
 

@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { loginApi } from '../../api/auth/apiAuth';
 import { setCredentials } from '../../redux/slices/authSlice';
@@ -9,7 +9,6 @@ import ThemeToggle from '../../components/common/ThemeToggle';
 
 export default function Login() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
@@ -17,12 +16,11 @@ export default function Login() {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const data  = await loginApi(values);
-        // console.log(data)
+        if(data.code !== 1) throw new Error(data.message)
+        console.log("checkd",data)
         dispatch(setCredentials(data.data));
-        // navigate(data.role === 'admin' ? '/admin/dashboard' : '/user/dashboard');
         toast.success('Login successful!');
       } catch (err) {
-        console.log(err)
         toast.error(err.response?.data?.message || err.message || 'Login failed');
       } finally {
         setSubmitting(false);

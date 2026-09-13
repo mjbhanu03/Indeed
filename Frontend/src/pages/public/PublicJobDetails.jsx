@@ -6,10 +6,10 @@ import { useSelector } from "react-redux";
 const PublicJobDetails = () => {
   const { id } = useParams();
   const { data: job, error, isLoading } = useJobsDetails(id);
-  
-  const {isAuthenticated} = useSelector(s=>s.auth)
+
+  const { isAuthenticated } = useSelector((s) => s.auth);
   // console.log("from here", job.data)
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   if (isLoading) {
     return (
@@ -18,14 +18,16 @@ const PublicJobDetails = () => {
       </div>
     );
   }
-  
+
   if (!job) return <NoDataFound />;
   if (error) return <div>{error}</div>;
 
-
   return (
     <div className="container py-5">
-      <div className="cursor-pointer" onClick={()=>navigate(-1)}> Back </div>
+      <div className="cursor-pointer" onClick={() => navigate(-1)}>
+        {" "}
+        Back{" "}
+      </div>
       <div
         className="card border-0 shadow-lg overflow-hidden"
         style={{ borderRadius: "20px" }}
@@ -142,32 +144,47 @@ const PublicJobDetails = () => {
                       ))}
                     </div>
                   </div>
-            {job.data[0]?.is_applied === 1 && (
-              <div
-  className="badge bg-success-subtle text-success border border-success px-3 py-2 w-100"
-  style={{ fontSize: "0.9rem" }}
->
-  ✓ Already Applied
-</div>
-            )}
-{job.data[0]?.is_active === 1 && job.data[0]?.is_applied === 0 && (isAuthenticated ? 
-                  <div className="d-flex gap-3">
-                <button className="btn btn-primary py-2 w-100" onClick={(e)=> {
-                  e.stopPropagation()
-                  navigate(`/user/apply-for-job/${id}`)}}>
-                    Apply Now
-                  </button>
-                <button className="text-white btn py-2 ai-btn w-100" onClick={(e)=> {
-                  e.stopPropagation()
-                  navigate(`/user/apply-for-job/${job.id}`)}}>
-                    Ask AI
-                  </button>
+                  {job.data[0]?.is_applied === 1 && (
+                    <div
+                      className="badge bg-success-subtle text-success border border-success px-3 py-2 w-100"
+                      style={{ fontSize: "0.9rem" }}
+                    >
+                      ✓ Already Applied
                     </div>
-                  : 
-                <button className="btn btn-primary w-100 py-2" onClick={()=> navigate("/signin")}>
-                    Login to Apply Now
-                  </button>
                   )}
+                  {job.data[0]?.is_active === 1 &&
+                    job.data[0]?.is_applied === 0 &&
+                    (isAuthenticated ? (
+                      <div className="d-flex gap-3">
+                        <button
+                          className="btn btn-primary py-2 w-100"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/user/apply-for-job/${id}`);
+                          }}
+                        >
+                          Apply Now
+                        </button>
+                        <button
+                          className="text-white btn py-2 ai-btn w-100"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/user/ai-job-chat`, {
+                              state: { jobId: id },
+                            });
+                          }}
+                        >
+                          Ask AI
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        className="btn btn-primary w-100 py-2"
+                        onClick={() => navigate("/signin")}
+                      >
+                        Login to Apply Now
+                      </button>
+                    ))}
                 </div>
               </div>
             </div>
