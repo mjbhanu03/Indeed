@@ -74,7 +74,6 @@ const ai = new GoogleGenAI({
         input
       }
     if(id)     params.previous_interaction_id= id
-  // console.log("ahiya", id)
   if(!id) id=""
   const interaction = await ai.interactions.create(params);
   if(interaction.statusCode === 429) return {error: true, message: "You exceeded your current quota, please check your plan and billing details. Please try again later or change the model.", id}

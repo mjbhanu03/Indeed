@@ -172,7 +172,7 @@ const createConversatoin = async (job_id, user_id, conversation_name) =>{
 
 // Fecthing Interaction ID
 const checkLastMessageForInteractnionID = async(conversation_id)=>{
-  const [[lastMessage]] = await conn.query(`select interaction_id from tbl_conversation_messages where conversation_id=? and user_type="admin" order by created_at desc limit 1`, [conversation_id])
+  const [[lastMessage]] = await conn.query(`select interaction_id from tbl_conversation_messages where conversation_id=? and user_type='admin' order by created_at desc limit 1`, [conversation_id])
   return lastMessage?.interaction_id
 }
 
