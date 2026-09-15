@@ -42,9 +42,9 @@ const signUp = async (data) => {
       const userProfileData = await repository.getUserProfile(
         signUpResult.user,
       );
-
+      console.log("Here only", signUpResult)
       const tokenData = {
-        user_id: signUpResult.user.user_id,
+        user_id: signUpResult.user,
         role: "user",
       };
 

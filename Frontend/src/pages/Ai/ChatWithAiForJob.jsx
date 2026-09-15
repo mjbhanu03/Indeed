@@ -13,14 +13,19 @@ const ChatWithAiForJob = () => {
   const [chats, setChats] = useState([]);
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
-  const { data: userProfileData } = useUserProfile();
-  // const [previousInteractionID, setPreviousInteractionID] = useState(null)
+  const { data: userProfileData, isLoading, isFetching, isError } = useUserProfile();
   const [error, setError] = useState(false)
 
-    const fetchChat = async () =>{
+console.log("PROFILE:", {
+  userProfileData,
+  isLoading,
+  isFetching,
+  isError,
+  error,
+});    const fetchChat = async () =>{
     try {
       const chats = await axiosClient.get(`/jobs/v1/chats/${jobId}`)
-        console.log("fetched chats", chats)
+        // console.log("fetched chats", chats)
       setChats(chats.data.data)
     } catch (error) {
       console.log("Fetch chat has problem: ", error)
@@ -36,9 +41,9 @@ const ChatWithAiForJob = () => {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
     });
-    console.log(chats)
+    // console.log(chats)
   }, [chats, loading]);
-
+  // console.log("chats", chats)
   const chatWithAi = async () => {
     if (!prompt.trim() || loading) return;
     setError(false)
@@ -65,7 +70,7 @@ const ChatWithAiForJob = () => {
         },
       );
       await fetchChat()
-      console.log("I will check here", response)
+      // console.log("I will check here", response)
     } catch (error) {
       console.error(error.message);
 
@@ -151,7 +156,7 @@ const ChatWithAiForJob = () => {
 
             </div>
                   {chat.user_type === "user" && (
-                    <div className="smallUserIcon">{userProfileData.data.full_name[0]}</div>
+                    <div className="smallUserIcon">{userProfileData?.data?.full_name?.[0] ? userProfileData?.data?.full_name[0] : "U"}</div>
                   )}
           </div>
         ))}

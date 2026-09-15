@@ -39,6 +39,7 @@ const checkToken = async (req, res, next) => {
         .send({ code: responseCode.ERROR, message: "tokenMissing", data: {} });
 
         const decoded = jwt.verify(token, process.env.JWT_WEB_TOKEN);
+
         if (!decoded)
           return res
         .status(401)
@@ -48,7 +49,7 @@ const checkToken = async (req, res, next) => {
         .status(401)
         .send({ code: responseCode.ERROR, message: "invalidToken", data: {} });
 
-        // console.log("da", decoded)
+        console.log("da", decoded)
     req.user = decoded;
 
     next();

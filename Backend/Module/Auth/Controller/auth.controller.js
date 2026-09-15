@@ -66,7 +66,7 @@ const signIn = async (req, res) => {
         statusCode.SUCESS,
         responseCode.SUCCESS,
         { key: result.key },
-        {data: result.user}
+        result.user
       );
       return;
     }

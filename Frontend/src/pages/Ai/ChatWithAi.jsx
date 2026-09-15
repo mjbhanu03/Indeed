@@ -140,7 +140,7 @@ const ChatWithAi = () => {
 
             </div>
                   {message.type === "user" && (
-                    <div className="smallUserIcon">{userProfileData.data.full_name[0]}</div>
+                    <div className="smallUserIcon">{userProfileData?.data?.full_name?.[0] || "U"}</div>
                   )}
           </div>
         ))}

@@ -10,7 +10,7 @@ const authSlice = createSlice({
     setCredentials(state, action) {
 
       console.log("comugn",action.payload)
-      const { user_id, email, full_name, mobile_number, role, token } = action.payload.data;
+      const { user_id, email, full_name, mobile_number, role, token } = action.payload;
       let userObj = {
         user_id, email, full_name, mobile_number, role
       }

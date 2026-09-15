@@ -37,6 +37,7 @@ const fetchDashboard = async (req, res) => {
 // Fetch Profie
 const fetchProfile = async (req, res) =>{
   try {
+    console.log("Oh here is the error", req.body)
     const response = await service.fetchProfile(req.user.user_id);
     if (!response.success)
       sendResponse(req, res, 400, responseCode.ERROR, { key: response.key }, {});

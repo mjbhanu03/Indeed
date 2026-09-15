@@ -19,10 +19,11 @@ export default function Register() {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const data  = await signUpApi(values);
+        if(data.code !== 1) throw new Error(data.message)
         console.log("dadad", data)
-        dispatch(setCredentials(data));
+        dispatch(setCredentials(data.data));
         toast.success(data?.message || 'Registration successful!');
-        navigate('/user/dashboard');
+        // navigate('/user/dashboard');
         return
       } catch (err) {
         console.log(err)

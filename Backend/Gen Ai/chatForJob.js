@@ -69,7 +69,7 @@ const ai = new GoogleGenAI({
   });
   
   const params = {
-        model: "gemini-3.8-flash",
+        model: "gemini-3.1-flash-lite",
         system_instruction: SYSTEM_PROMPT,
         input
       }
